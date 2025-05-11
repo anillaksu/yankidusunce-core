@@ -1,0 +1,5 @@
+input_dir: /home/anil/yankidusunce-core/data/input_audio
+output_dir: /home/anil/yankidusunce-core/data/output_text
+log_file: /home/anil/yankidusunce-core/logs/whisper_auto.log
+model: base
+language: Turkish

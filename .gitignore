@@ -1,0 +1,7 @@
+*.log
+__pycache__/
+*.pyc
+data/input_audio/
+data/output_text/*.txt
+data/output_text/*.json
+*.zip

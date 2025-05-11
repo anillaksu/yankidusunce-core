@@ -1,0 +1,4 @@
+python-telegram-bot
+gtts
+python-dotenv
+gpt4all
