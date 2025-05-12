@@ -1,0 +1,12 @@
+📡 İzleme başlatıldı: data/input_audio
+./watch_and_generate.sh: satır 9: logs/watch_and_generate.log: Böyle bir dosya ya da dizin yok
+Setting up watches.
+Couldn't watch data/input_audio: No such file or directory
+📡 İzleme başlatıldı: data/input_audio
+./watch_and_generate.sh: satır 9: logs/watch_and_generate.log: Böyle bir dosya ya da dizin yok
+Setting up watches.
+Couldn't watch data/input_audio: No such file or directory
+Setting up watches.
+Watches established.
+Setting up watches.
+Watches established.

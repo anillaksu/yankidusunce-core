@@ -15,12 +15,18 @@ load_dotenv()
 BOT_TOKEN = os.getenv("BOT_TOKEN")
 
 # Modeli yükle
-model = GPT4All("mistral-7b-instruct-v0.2.Q4_K_M.gguf")
+model = GPT4All("mistral-7b-instruct-v0.2.Q4_0.gguf",
+                model_path=os.path.expanduser("~/.cache/gpt4all"),
+                allow_download=False,
+                backend='cpu')  # Dosya yerelde olmalı
 
 # Logging
+log_dir = os.path.join(os.path.dirname(__file__), "logs")
+os.makedirs(log_dir, exist_ok=True)
+log_path = os.path.join(log_dir, "bot.log")
 logging.basicConfig(format='%(asctime)s - %(name)s - %(levelname)s - %(message)s',
                     level=logging.INFO,
-                    filename="logs/bot.log")
+                    filename=log_path)
 
 # JSON veri okuma
 def load_json_data(path):
