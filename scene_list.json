@@ -1,5 +1,10 @@
 [
-  "sahne1",
-  "sahne2",
-  "sahne3"
+  {
+    "id": "sahne1",
+    "prompt": "a mystical forest with floating orbs and soft light"
+  },
+  {
+    "id": "sahne2",
+    "prompt": "a futuristic ruined city covered in fog and neon lights"
+  }
 ]
