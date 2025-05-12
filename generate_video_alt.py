@@ -5,13 +5,12 @@ from moviepy.editor import (
     ImageClip,
     CompositeVideoClip,
     TextClip,
-    concatenate_videoclips,
 )
 from moviepy.video.tools.subtitles import SubtitlesClip
 from PIL import Image as PILImage
 import subprocess
 
-# 📁 Yol ayarları
+# 📁 Klasör yolları
 BASE_DIR = os.path.dirname(os.path.abspath(__file__))
 INPUT_AUDIO_DIR = os.path.join(BASE_DIR, "data/input_audio")
 INPUT_IMAGE_DIR = os.path.join(BASE_DIR, "data/input_images")
@@ -32,26 +31,33 @@ audio = AudioFileClip(audio_path)
 
 # ✅ Görsel
 image = PILImage.open(image_path)
-width, height = image.size
-image_clip = ImageClip(image_path, duration=audio.duration).set_audio(audio).resize((width, height))
+image_clip = (
+    ImageClip(image_path)
+    .set_duration(audio.duration)
+    .set_audio(audio)
+    .resize(height=720)
+    .set_position("center")
+)
 
-# ✅ Altyazı (varsa)
+final_size = image_clip.size
+
+# ✅ Altyazı
 if os.path.exists(subtitle_path):
     try:
         generator = lambda txt: TextClip(txt, font="DejaVu-Sans", fontsize=32, color="white")
         subtitles = SubtitlesClip(subtitle_path, generator)
-        video = CompositeVideoClip([image_clip, subtitles.set_position(("center", "bottom"))])
+        video = CompositeVideoClip([image_clip, subtitles.set_position(("center", "bottom"))], size=final_size)
     except Exception as e:
         print(f"⚠️ Altyazı yüklenemedi: {e}")
         video = image_clip
 else:
     video = image_clip
 
-# ✅ Video çıkışı
+# ✅ Video üret
 video.write_videofile(output_path, fps=24)
 print(f"🎬 Video oluşturuldu: {output_path}")
 
-# 📤 Git push scriptini çalıştır
+# 📤 Git Push
 if os.path.exists(PUSH_SCRIPT_PATH):
     try:
         subprocess.run(["bash", PUSH_SCRIPT_PATH], check=True)
