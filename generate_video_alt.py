@@ -10,7 +10,7 @@ from moviepy.video.tools.subtitles import SubtitlesClip
 from PIL import Image as PILImage
 import subprocess
 
-# 📁 Klasör yolları
+# 📁 Yol ayarları
 BASE_DIR = os.path.dirname(os.path.abspath(__file__))
 INPUT_AUDIO_DIR = os.path.join(BASE_DIR, "data/input_audio")
 INPUT_IMAGE_DIR = os.path.join(BASE_DIR, "data/input_images")
@@ -41,19 +41,36 @@ image_clip = (
 
 final_size = image_clip.size
 
-# ✅ Altyazı
+# ✅ Altyazı (taşmaz, dinamik boyutlu)
 if os.path.exists(subtitle_path):
     try:
-        generator = lambda txt: TextClip(txt, font="DejaVu-Sans", fontsize=32, color="white")
+        video_height = final_size[1]
+        dynamic_fontsize = int(video_height * 0.05)  # Yüksekliğin %5'i
+
+        def generator(txt):
+            return TextClip(
+                txt,
+                font="DejaVu-Sans",
+                fontsize=dynamic_fontsize,
+                color="white",
+                stroke_color="black",
+                stroke_width=2,
+                method="caption",
+                size=(final_size[0] * 0.9, None),
+            )
+
         subtitles = SubtitlesClip(subtitle_path, generator)
-        video = CompositeVideoClip([image_clip, subtitles.set_position(("center", "bottom"))], size=final_size)
+        video = CompositeVideoClip(
+            [image_clip, subtitles.set_position(("center", "bottom"))],
+            size=final_size
+        )
     except Exception as e:
         print(f"⚠️ Altyazı yüklenemedi: {e}")
         video = image_clip
 else:
     video = image_clip
 
-# ✅ Video üret
+# 🎞️ Video üret
 video.write_videofile(output_path, fps=24)
 print(f"🎬 Video oluşturuldu: {output_path}")
 
